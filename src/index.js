@@ -1,5 +1,28 @@
 import { CreateTodo } from "./modules/createTodos.js";
 import { project } from "./modules/projects.js";
+import { setPriority } from "./modules/setPriority.js";
+import { markTodoAsComplete } from "./modules/markTodoAsComplete.js";
+import projectIcon from "./icons/addProject.png";
+
+function screenController() {
+  const projectsDiv = document.querySelector(".projects");
+  const todosDiv = document.querySelector(".todo-list");
+
+  // implement add icon
+  const myIcon = new Image();
+  myIcon.src = projectIcon;
+
+  const addBtn = document.createElement("button");
+  addBtn.textContent = `New Project`;
+  addBtn.insertBefore(myIcon, addBtn.firstChild);
+
+  const Home = document.createElement("button");
+  Home.textContent = "# Home";
+
+  projectsDiv.append(addBtn, Home);
+}
+
+screenController();
 
 //Create First Todo
 const firstTodo = new CreateTodo(
