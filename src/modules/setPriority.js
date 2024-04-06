@@ -1,3 +1,3 @@
-export const setPriority = (todo, priority) => {
-  todo.priority = priority;
+export const setPriority = (todoId, priority) => {
+  todoId.priority = priority;
 };
