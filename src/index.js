@@ -35,18 +35,29 @@ function screenController() {
 
   projectsDiv.append(addBtn, Home);
 
+  const projectLoader = project();
+
   const createProject = () => {
-    const inputName = document.querySelector("#name").value;
-    const inputColor = document.querySelector("#color").value;
-    const projectContainer = document.querySelector(".todo-list");
+    let inputName = document.querySelector("#name");
+    let inputColor = document.querySelector("#color");
+    const projectContainer = document.querySelector(".project-list");
     const projectsDiv = document.createElement("div");
-    const h2 = document.createElement("h2");
+    const projectsCounter = document.querySelector(".proNum");
+    const h3 = document.createElement("h3");
 
-    h2.textContent = "My Projects";
+    h3.textContent = "My Projects";
 
-    const projectLoader = project();
-    projectLoader.createProject(inputName, inputColor);
+    projectLoader.createProject(inputName.value, inputColor.value);
+    h3.textContent = `# ${inputName.value}`;
+    projectsDiv.style.backgroundColor = `light${inputColor.value}`;
+
+    projectsDiv.appendChild(h3);
+    projectContainer.appendChild(projectsDiv);
     console.log(projectLoader.projects);
+
+    inputName.value = "";
+    inputColor.value = "";
+    projectsCounter.textContent = projectLoader.projects.length;
     dialog.close();
   };
 
