@@ -4,12 +4,19 @@ import { project } from "./modules/projects.js";
 import { setPriority } from "./modules/setPriority.js";
 import { markTodoAsComplete } from "./modules/markTodoAsComplete.js";
 import projectIcon from "./icons/addProject.png";
+import todoIcon from "./icons/addTodo.png";
 
 function screenController() {
+  const projectsContainer = document.querySelector(".project-list");
+  const todosContainer = document.querySelector(".todo-list");
   const projectsDiv = document.querySelector(".projects");
-  const todosDiv = document.querySelector(".todo-list");
+  const showProjectsBtn = document.querySelector("#myProjects");
+  const projectsCounter = document.querySelector(".proNum");
   const cancelBtn = document.querySelector("#cancel");
-  const dialog = document.querySelector("dialog");
+  const cancelTodoBtn = document.querySelector("#cancel-todo");
+  const dialogProject = document.querySelector(".CreateProject");
+  const dialogTodo = document.querySelector(".CreateTodo");
+  const todoAddBtn = document.createElement("button");
 
   // implement add icon
   const myIcon = new Image();
@@ -21,45 +28,139 @@ function screenController() {
   addBtn.textContent = `New Project`;
   addBtn.insertBefore(myIcon, addBtn.firstChild);
 
+  //Default Project
   const Home = document.createElement("button");
+  const HomeDiv = document.createElement("div");
+
+  HomeDiv.style.backgroundColor = "white";
+
   Home.textContent = "# Home";
 
   //Projects dialog
   addBtn.addEventListener("click", () => {
-    dialog.showModal();
+    dialogProject.showModal();
   });
 
   cancelBtn.addEventListener("click", () => {
-    dialog.close();
+    dialogProject.close();
   });
 
-  projectsDiv.append(addBtn, Home);
-
   const projectLoader = project();
+
+  projectsDiv.append(addBtn, Home);
+  projectsContainer.appendChild(HomeDiv);
+  projectLoader.createProject("Home", "Default");
+  HomeDiv.textContent = `# Home / todos: ${projectLoader.projects[0].todos.length}`;
 
   const createProject = () => {
     let inputName = document.querySelector("#name");
     let inputColor = document.querySelector("#color");
-    const projectContainer = document.querySelector(".project-list");
-    const projectsDiv = document.createElement("div");
-    const projectsCounter = document.querySelector(".proNum");
-    const h3 = document.createElement("h3");
-
-    h3.textContent = "My Projects";
+    const projectsBtn = document.createElement("button");
+    const projectsInfo = document.createElement("div");
 
     projectLoader.createProject(inputName.value, inputColor.value);
-    h3.textContent = `# ${inputName.value}`;
-    projectsDiv.style.backgroundColor = `light${inputColor.value}`;
+    projectsInfo.textContent = `# ${inputName.value} / todos: ${projectLoader.projects[0].todos.length}`;
+    projectsBtn.textContent = `# ${inputName.value}`;
+    projectsBtn.style.backgroundColor = `light${inputColor.value}`;
+    projectsInfo.style.backgroundColor = `light${inputColor.value}`;
 
-    projectsDiv.appendChild(h3);
-    projectContainer.appendChild(projectsDiv);
+    projectsContainer.appendChild(projectsInfo);
+    projectsDiv.appendChild(projectsBtn);
     console.log(projectLoader.projects);
 
     inputName.value = "";
     inputColor.value = "";
     projectsCounter.textContent = projectLoader.projects.length;
-    dialog.close();
+
+    projectsBtn.addEventListener("click", showTodoSection);
+    dialogProject.close();
   };
+
+  const allButtons = projectsDiv.querySelectorAll("button");
+
+  const showTodoSection = (event) => {
+    // Remove Todo Content
+    while (todosContainer.hasChildNodes()) {
+      todosContainer.removeChild(todosContainer.firstChild);
+    }
+
+    //DOM
+    const h3 = document.createElement("h3");
+    const todosDiv = document.createElement("div");
+    const todo = document.createElement("div");
+    const checkbox = document.createElement("input");
+    const label = document.createElement("label");
+    const description = document.createElement("p");
+    let targetName = event.target.textContent.split("# ")[1];
+
+    h3.textContent = event.target.textContent;
+
+    // set attribute for checkbox input element
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", "todo");
+    checkbox.setAttribute("name", "todo");
+
+    // set attribute for label element
+    label.setAttribute("for", "todo");
+
+    // Implement add icon
+    const myTodoIcon = new Image();
+    myTodoIcon.src = todoIcon;
+    myTodoIcon.classList.add("plus");
+
+    todoAddBtn.id = "todoAddBtn";
+    todoAddBtn.textContent = `Add Task`;
+    todoAddBtn.insertBefore(myTodoIcon, todoAddBtn.firstChild);
+
+    todosContainer.append(h3, todoAddBtn);
+
+    // Show todo list for each project
+    projectLoader.projects.forEach((project) => {
+      if (project.name === targetName) {
+        const newTodo = new CreateTodo(
+          "Valorant",
+          "play many games",
+          "28 March",
+          "First"
+        );
+        project.todos.push(newTodo);
+        label.textContent = newTodo.title;
+        description.textContent = newTodo.description;
+        console.log(project.todos);
+      }
+    });
+
+    const createTodo = () => {};
+
+    //Todo dialog
+    todoAddBtn.addEventListener("click", () => {
+      dialogTodo.showModal();
+    });
+
+    cancelTodoBtn.addEventListener("click", () => {
+      dialogTodo.close();
+    });
+
+    // Append Childs
+    todo.append(checkbox, label, description);
+    todosDiv.appendChild(todo);
+    todosContainer.appendChild(todosDiv);
+
+    projectsContainer.style.display = "none";
+    todosContainer.style.display = "block";
+  };
+
+  // Iterate over each button and add an event listener, excluding the two buttons
+  allButtons.forEach((button) => {
+    if (button !== addBtn && button !== showProjectsBtn) {
+      button.addEventListener("click", showTodoSection);
+    }
+  });
+
+  showProjectsBtn.addEventListener("click", () => {
+    projectsContainer.style.display = "block";
+    todosContainer.style.display = "none";
+  });
 
   return {
     createProject,

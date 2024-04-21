@@ -32,6 +32,15 @@ header {
   padding: 3px 5px;
 }
 
+#todoAddBtn {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  gap: 5px;
+  padding: 3px 5px;
+}
+
 .container {
   display: flex;
   height: 100%;
@@ -59,6 +68,16 @@ header {
   flex-direction: column;
   width: 20%;
   gap: 5px;
+}
+
+.project-list {
+  background-color: #ababab8f;
+  width: 100%;
+}
+
+.todo-list {
+  display: none;
+  width: 100%;
 }
 
 footer {
