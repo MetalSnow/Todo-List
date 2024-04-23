@@ -13,9 +13,9 @@ function screenController() {
   const showProjectsBtn = document.querySelector("#myProjects");
   const projectsCounter = document.querySelector(".proNum");
   const cancelBtn = document.querySelector("#cancel");
-  const cancelTodoBtn = document.querySelector("#cancel-todo");
   const dialogProject = document.querySelector(".CreateProject");
   const dialogTodo = document.querySelector(".CreateTodo");
+  const cancelTodoBtn = document.querySelector("#cancel-todo");
   const todoAddBtn = document.createElement("button");
 
   // implement add icon
@@ -69,7 +69,6 @@ function screenController() {
     console.log(projectLoader.projects);
 
     inputName.value = "";
-    inputColor.value = "";
     projectsCounter.textContent = projectLoader.projects.length;
 
     projectsBtn.addEventListener("click", showTodoSection);
@@ -87,21 +86,21 @@ function screenController() {
     //DOM
     const h3 = document.createElement("h3");
     const todosDiv = document.createElement("div");
-    const todo = document.createElement("div");
-    const checkbox = document.createElement("input");
-    const label = document.createElement("label");
-    const description = document.createElement("p");
-    let targetName = event.target.textContent.split("# ")[1];
+    // const todo = document.createElement("div");
+    // const checkbox = document.createElement("input");
+    // const label = document.createElement("label");
+    // const description = document.createElement("p");
 
     h3.textContent = event.target.textContent;
+    let targetName = h3.textContent.split("# ")[1];
 
-    // set attribute for checkbox input element
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("id", "todo");
-    checkbox.setAttribute("name", "todo");
+    // // set attribute for checkbox input element
+    // checkbox.setAttribute("type", "checkbox");
+    // checkbox.setAttribute("id", "todo");
+    // checkbox.setAttribute("name", "todo");
 
-    // set attribute for label element
-    label.setAttribute("for", "todo");
+    // // set attribute for label element
+    // label.setAttribute("for", "todo");
 
     // Implement add icon
     const myTodoIcon = new Image();
@@ -115,22 +114,47 @@ function screenController() {
     todosContainer.append(h3, todoAddBtn);
 
     // Show todo list for each project
-    projectLoader.projects.forEach((project) => {
-      if (project.name === targetName) {
-        const newTodo = new CreateTodo(
-          "Valorant",
-          "play many games",
-          "28 March",
-          "First"
-        );
-        project.todos.push(newTodo);
-        label.textContent = newTodo.title;
-        description.textContent = newTodo.description;
-        console.log(project.todos);
-      }
-    });
+    const createTodoBtn = document.querySelector("#create-todo");
 
-    const createTodo = () => {};
+    const createTodo = () => {
+      const todo = document.createElement("div");
+      const checkbox = document.createElement("input");
+      const label = document.createElement("label");
+      const description = document.createElement("p");
+      const inputTitle = document.querySelector("#title");
+      const inputDescription = document.querySelector("#description");
+      const inputDate = document.querySelector("#date");
+      const inputPriority = document.querySelector("#priority");
+
+      // set attribute for checkbox input element
+      checkbox.setAttribute("type", "checkbox");
+      checkbox.setAttribute("id", "todo");
+      checkbox.setAttribute("name", "todo");
+
+      // set attribute for label element
+      label.setAttribute("for", "todo");
+
+      projectLoader.projects.forEach((project) => {
+        if (project.name === targetName) {
+          const newTodo = new CreateTodo(
+            inputTitle.value,
+            inputDescription.value,
+            inputDate.value,
+            inputPriority.value
+          );
+          project.todos.push(newTodo);
+          label.textContent = newTodo.title;
+          description.textContent = newTodo.description;
+          console.log(project);
+        }
+      });
+
+      // Append Childs
+      todo.append(checkbox, label, description);
+      todosDiv.appendChild(todo);
+    };
+
+    createTodoBtn.addEventListener("click", createTodo);
 
     //Todo dialog
     todoAddBtn.addEventListener("click", () => {
@@ -141,9 +165,6 @@ function screenController() {
       dialogTodo.close();
     });
 
-    // Append Childs
-    todo.append(checkbox, label, description);
-    todosDiv.appendChild(todo);
     todosContainer.appendChild(todosDiv);
 
     projectsContainer.style.display = "none";
