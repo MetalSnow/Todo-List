@@ -16,7 +16,6 @@ function screenController() {
   const dialogProject = document.querySelector(".CreateProject");
   const dialogTodo = document.querySelector(".CreateTodo");
   const cancelTodoBtn = document.querySelector("#cancel-todo");
-  const todoAddBtn = document.createElement("button");
 
   // implement add icon
   const myIcon = new Image();
@@ -58,6 +57,7 @@ function screenController() {
 
     // Create project button and info
     const projectsBtn = document.createElement("button");
+    const todoAddBtn = document.createElement("button");
     const projectsInfo = document.createElement("div");
     projectsInfo.textContent = `# ${inputName.value} / todos: 0`; // Initialize with 0 todos
     projectsBtn.textContent = `# ${inputName.value}`;
@@ -66,7 +66,9 @@ function screenController() {
     projectsContainer.appendChild(projectsInfo);
     projectsDiv.appendChild(projectsBtn);
 
-    // Create project container
+    // Create project and project container
+    projectLoader.createProject(inputName.value, inputColor.value);
+
     const todosProject = document.createElement("div");
     const h3 = document.createElement("h3");
     h3.textContent = inputName.value;
@@ -76,15 +78,20 @@ function screenController() {
     const myTodoIcon = new Image();
     myTodoIcon.src = todoIcon;
     myTodoIcon.classList.add("plus");
-    todoAddBtn.id = "todoAddBtn";
+
+    todoAddBtn.classList.add("todo-add-btn");
     todoAddBtn.textContent = `Add Task`;
     todoAddBtn.insertBefore(myTodoIcon, todoAddBtn.firstChild);
+    todoAddBtn.addEventListener("click", () => {
+      dialogTodo.showModal();
+    });
     todosProject.append(h3, todoAddBtn);
 
-    // Show todo list for each project
-    const createTodoBtn = document.querySelector("#create-todo");
+    // Append Childs
+    todosProject.append(h3, todoAddBtn);
 
-    const createTodo = () => {
+    const createTodo = (activeHeader) => {
+      const todosDiv = document.createElement("div");
       const todo = document.createElement("div");
       const checkbox = document.createElement("input");
       const label = document.createElement("label");
@@ -102,8 +109,8 @@ function screenController() {
       // set attribute for label element
       label.setAttribute("for", "todo");
 
-      projectLoader.projects.map((project) => {
-        if (project.name === targetName) {
+      projectLoader.projects.forEach((project) => {
+        if (project.name === activeHeader) {
           const newTodo = new CreateTodo(
             inputTitle.value,
             inputDescription.value,
@@ -113,17 +120,17 @@ function screenController() {
           project.addNewTodo(newTodo);
           label.textContent = newTodo.title;
           description.textContent = newTodo.description;
-          console.log(project);
+          console.log(h3.textContent);
         }
       });
+      console.log(projectLoader.projects);
+      console.log(h3.textContent);
 
       // Append Childs
       todo.append(checkbox, label, description);
       todosDiv.appendChild(todo);
-      todosProject.append(h3, todoAddBtn, todosDiv);
+      todosProject.appendChild(todosDiv);
     };
-
-    createTodoBtn.addEventListener("click", createTodo);
 
     // Clear input fields and close dialog
     inputName.value = "";
@@ -135,39 +142,52 @@ function screenController() {
     // Hide todos of the previously active project container
     const existingProjectContainers =
       document.querySelectorAll(".project-container");
+
     existingProjectContainers.forEach((container) => {
       container.style.display = "none";
+    });
+
+    // Show todo list for each project
+    const createTodoBtn = document.querySelector("#create-todo");
+
+    // createTodoBtn.addEventListener("click", createTodo);
+    createTodoBtn.addEventListener("click", () => {
+      existingProjectContainers.forEach((container) => {
+        if (container.style.display === "block") {
+          const header = container.firstChild.textContent;
+          createTodo(header);
+        }
+      });
     });
 
     // Append new project container to todos container
     todosContainer.appendChild(todosProject);
   };
 
-  const allButtons = projectsDiv.querySelectorAll("button");
+  // const allButtons = projectsDiv.querySelectorAll("button");
 
   const showTodoSection = (event) => {
-    //Todo dialog
-    todoAddBtn.addEventListener("click", () => {
-      dialogTodo.showModal();
+    const targetName = event.target.textContent.split("# ")[1];
+    const projectsContainers = document.querySelectorAll(".project-container");
+    projectsContainers.forEach((container) => {
+      const containerName = container.querySelector("h3").textContent;
+      if (containerName === targetName) {
+        container.style.display = "block";
+      } else {
+        container.style.display = "none";
+      }
     });
 
-    cancelTodoBtn.addEventListener("click", () => {
-      dialogTodo.close();
-    });
+    console.log(projectLoader.projects);
 
     projectsContainer.style.display = "none";
     todosContainer.style.display = "block";
   };
 
-  // Iterate over each button and add an event listener, excluding the two buttons
+  //Todo dialog
 
-  allButtons.forEach((button) => {
-    if (button !== addBtn && button !== showProjectsBtn) {
-      // if (button.textContent.split("# ")[1] === project.name) {
-      //   button.addEventListener("click", () => {
-      //   });
-      button.addEventListener("click", showTodoSection);
-    }
+  cancelTodoBtn.addEventListener("click", () => {
+    dialogTodo.close();
   });
 
   showProjectsBtn.addEventListener("click", () => {
