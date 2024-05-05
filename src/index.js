@@ -2,9 +2,13 @@ import "./style.css";
 import { CreateTodo } from "./modules/createTodos.js";
 import { project } from "./modules/projects.js";
 import { setPriority } from "./modules/setPriority.js";
-import { markTodoAsComplete } from "./modules/markTodoAsComplete.js";
+import {
+  markTodoAsCompleted,
+  markTodoAsUncompleted,
+} from "./modules/markTodoAsCompleted.js";
 import projectIcon from "./icons/addProject.png";
 import todoIcon from "./icons/addTodo.png";
+import { formatDistanceToNow } from "date-fns";
 
 function screenController() {
   const projectsContainer = document.querySelector(".project-list");
@@ -40,12 +44,16 @@ function screenController() {
 
   // Create Default Project
   const defaultProject = () => {
-    const HomeBtn = document.createElement("button");
-    const HomeDiv = document.createElement("div");
+    const homeBtn = document.createElement("button");
+    const homeInfo = document.createElement("div");
+    const todoCounter = document.createElement("span");
 
-    HomeDiv.style.backgroundColor = "white";
+    homeInfo.style.backgroundColor = "white";
+    homeInfo.classList.add("project-info");
+    homeInfo.textContent = `# Home / todos: `;
+    todoCounter.textContent = "0";
 
-    HomeBtn.textContent = "# Home";
+    homeBtn.textContent = "# Home";
     // Create project and project container for Home
     const todoAddBtn = document.createElement("button");
     const todosProject = document.createElement("div");
@@ -70,12 +78,12 @@ function screenController() {
     todosProject.append(h3, todoAddBtn);
     todosContainer.appendChild(todosProject);
 
-    HomeBtn.addEventListener("click", showTodoSection);
+    homeBtn.addEventListener("click", showTodoSection);
 
-    projectsDiv.append(addBtn, HomeBtn);
-    projectsContainer.appendChild(HomeDiv);
+    projectsDiv.append(addBtn, homeBtn);
+    homeInfo.appendChild(todoCounter);
+    projectsContainer.appendChild(homeInfo);
     projectLoader.createProject("Home", "Default");
-    HomeDiv.textContent = `# Home / todos: ${projectLoader.projects[0].todos.length}`;
   };
 
   // Create Project
@@ -83,14 +91,25 @@ function screenController() {
     let inputName = document.querySelector("#name");
     let inputColor = document.querySelector("#color");
 
+    // Check if inputName is filled
+    if (inputName.value === "") {
+      alert("Please Enter Project's Name!");
+      return;
+    }
+
     // Create project button and info
     const projectsBtn = document.createElement("button");
     const todoAddBtn = document.createElement("button");
     const projectsInfo = document.createElement("div");
-    projectsInfo.textContent = `# ${inputName.value} / todos: 0`; // Initialize with 0 todos
+    const todoCounter = document.createElement("span");
+    projectsInfo.textContent = `# ${inputName.value} / todos: `;
+    todoCounter.textContent = "0";
     projectsBtn.textContent = `# ${inputName.value}`;
     projectsBtn.style.backgroundColor = `light${inputColor.value}`;
     projectsInfo.style.backgroundColor = `light${inputColor.value}`;
+    projectsInfo.classList.add("project-info");
+    projectsInfo.setAttribute("id", "");
+    projectsInfo.appendChild(todoCounter);
     projectsContainer.appendChild(projectsInfo);
     projectsDiv.appendChild(projectsBtn);
 
@@ -114,12 +133,8 @@ function screenController() {
     todoAddBtn.addEventListener("click", () => {
       dialogTodo.showModal();
     });
-    todosProject.append(h3, todoAddBtn);
 
-    // Append Childs
     todosProject.append(h3, todoAddBtn);
-
-    //######################################################################
 
     // Clear input fields and close dialog
     inputName.value = "";
@@ -138,31 +153,41 @@ function screenController() {
 
     // Append new project container to todos container
     todosContainer.appendChild(todosProject);
-
-    return {
-      createTodo,
-    };
   };
 
   // Create Todo
   const createTodo = (activeHeader) => {
-    const todosDiv = document.createElement("div");
-    const todo = document.createElement("div");
-    const checkbox = document.createElement("input");
-    const label = document.createElement("label");
-    const description = document.createElement("p");
     const inputTitle = document.querySelector("#title");
     const inputDescription = document.querySelector("#description");
     const inputDate = document.querySelector("#date");
     const inputPriority = document.querySelector("#priority");
 
-    // set attribute for checkbox input element
+    // Check if inputs are filled
+    if (
+      inputTitle.value === "" ||
+      inputDescription.value === "" ||
+      inputDate.value === ""
+    ) {
+      alert("Please Fill The Required Fields");
+      return;
+    }
+
+    const todosDiv = document.createElement("div");
+    const todo = document.createElement("div");
+    const checkbox = document.createElement("input");
+    const label = document.createElement("label");
+    const description = document.createElement("p");
+    const dueDate = document.createElement("p");
+
+    // set attribute
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("id", "todo");
     checkbox.setAttribute("name", "todo");
-
-    // set attribute for label element
     label.setAttribute("for", "todo");
+
+    // Include date-fns to show date
+    const result = formatDistanceToNow(inputDate.value, { addSuffix: true });
+    dueDate.textContent = result;
 
     projectLoader.projects.forEach((project) => {
       if (project.name === activeHeader) {
@@ -170,18 +195,30 @@ function screenController() {
           inputTitle.value,
           inputDescription.value,
           inputDate.value,
-          inputPriority.value
+          inputPriority.value,
+          false
         );
         project.addNewTodo(newTodo);
         label.textContent = newTodo.title;
         description.textContent = newTodo.description;
         console.log(activeHeader);
         console.log(projectLoader.projects);
+
+        // Mark todo as completed
+        checkbox.addEventListener("change", () => {
+          if (checkbox.checked) {
+            console.log("Checkbox is checked..");
+            markTodoAsCompleted(label, newTodo);
+          } else {
+            console.log("Checkbox is not checked..");
+            markTodoAsUncompleted(label, newTodo);
+          }
+        });
       }
     });
 
     // Append Childs
-    todo.append(checkbox, label, description);
+    todo.append(checkbox, label, description, dueDate);
     todosDiv.appendChild(todo);
 
     // Find the corresponding project container
@@ -200,19 +237,26 @@ function screenController() {
 
     dialogTodo.close();
   };
+
   // Show todo list for each project
   const createTodoBtn = document.querySelector("#create-todo");
 
-  // createTodoBtn.addEventListener("click", createTodo);
   createTodoBtn.addEventListener("click", () => {
-    console.log("clicked");
     const projectContainers = document.querySelectorAll(".project-container");
+    const projectInfos = document.querySelectorAll(".project-info span");
+
+    // Create Todo
     projectContainers.forEach((container) => {
       if (container.style.display === "block") {
         const header = container.firstChild.textContent;
         createTodo(header);
       }
     });
+
+    // Update project info
+    for (let i = 0; i < projectInfos.length; i++) {
+      projectInfos[i].textContent = projectLoader.projects[i].todos.length;
+    }
   });
 
   const showTodoSection = (event) => {
