@@ -1,11 +1,11 @@
 import "./style.css";
 import { CreateTodo } from "./modules/createTodos.js";
-import { project } from "./modules/projects.js";
+import { projectLoader } from "./modules/projects.js";
 import { setPriority } from "./modules/setPriority.js";
 import {
   markTodoAsCompleted,
-  markTodoAsUncompleted,
-} from "./modules/markTodoAsCompleted.js";
+  UnmarkTodoAsCompleted,
+} from "./modules/markTodo.js";
 import projectIcon from "./icons/addProject.png";
 import todoIcon from "./icons/addTodo.png";
 import { formatDistanceToNow } from "date-fns";
@@ -39,8 +39,6 @@ function screenController() {
   cancelBtn.addEventListener("click", () => {
     dialogProject.close();
   });
-
-  const projectLoader = project();
 
   // Create Default Project
   const defaultProject = () => {
@@ -179,6 +177,8 @@ function screenController() {
     const description = document.createElement("p");
     const dueDate = document.createElement("p");
 
+    todo.classList.add("todo");
+
     // set attribute
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("id", "todo");
@@ -211,7 +211,7 @@ function screenController() {
             markTodoAsCompleted(label, newTodo);
           } else {
             console.log("Checkbox is not checked..");
-            markTodoAsUncompleted(label, newTodo);
+            UnmarkTodoAsCompleted(label, newTodo);
           }
         });
       }

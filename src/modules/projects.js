@@ -1,4 +1,6 @@
-export function project(projects) {
+export { projectLoader };
+
+function project(projects) {
   projects = [];
   const createProject = (name, color) => {
     const newProject = {
@@ -17,3 +19,5 @@ export function project(projects) {
     createProject,
   };
 }
+
+const projectLoader = project();

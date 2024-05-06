@@ -75,9 +75,14 @@ header {
   width: 100%;
 }
 
+/* todos section */
 .todo-list {
   display: none;
   width: 100%;
+}
+
+.todo {
+  transition: all 0.6s ease 0s;
 }
 
 footer {
