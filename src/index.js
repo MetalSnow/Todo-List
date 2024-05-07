@@ -36,11 +36,6 @@ const myProjectIcon = new Image();
 myProjectIcon.src = projectIcon;
 myProjectIcon.classList.add("plus");
 
-// // Implement todo add icon
-// const myTodoIcon = new Image();
-// myTodoIcon.src = todoIcon;
-// myTodoIcon.classList.add("plus");
-
 addBtn.id = "addBtn";
 addBtn.textContent = `New Project`;
 addBtn.insertBefore(myProjectIcon, addBtn.firstChild);
@@ -85,3 +80,5 @@ createTodoBtn.addEventListener("click", () => {
 defaultProject();
 
 createBtn.addEventListener("click", createProject);
+
+console.log("are we back???")
