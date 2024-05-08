@@ -2,11 +2,8 @@ import "./style.css";
 import projectIcon from "./icons/addProject.png";
 import todoIcon from "./icons/addTodo.png";
 import { projectLoader } from "./modules/projects.js";
-import { setPriority } from "./modules/setPriority.js";
 import { defaultProject } from "./modules/defaultProject.js";
-// Create Project
 import { createProject } from "./modules/createProjects.js";
-// Create Todo
 import { createNewTodo } from "./modules/createTodos.js";
 import {
   projectsContainer,
@@ -14,22 +11,15 @@ import {
   showProjectsBtn,
   cancelBtn,
   dialogProject,
-  dialogTodo,
-  cancelTodoBtn,
   createBtn,
   addBtn,
   createTodoBtn,
 } from "./modules/domModule.js";
-
-import {
-  markTodoAsCompleted,
-  UnmarkTodoAsCompleted,
-} from "./modules/markTodo.js";
+export { todoIcon };
 export {
   markTodoAsCompleted,
   UnmarkTodoAsCompleted,
 } from "./modules/markTodo.js";
-export { todoIcon };
 
 // implement project add icon
 const myProjectIcon = new Image();
@@ -49,11 +39,7 @@ cancelBtn.addEventListener("click", () => {
   dialogProject.close();
 });
 
-//Todo dialog
-cancelTodoBtn.addEventListener("click", () => {
-  dialogTodo.close();
-});
-
+//show projects section
 showProjectsBtn.addEventListener("click", () => {
   projectsContainer.style.display = "block";
   todosContainer.style.display = "none";

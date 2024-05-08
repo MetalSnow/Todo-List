@@ -2,8 +2,17 @@ export { createNewTodo };
 import { formatDistanceToNow } from "date-fns";
 import { markTodoAsCompleted, UnmarkTodoAsCompleted } from "../index.js";
 import { projectLoader } from "./projects.js";
-import { dialogTodo } from "./domModule";
+import {
+  cancelEditBtn,
+  confirmEditBtn,
+  dialogEdit,
+  dialogTodo,
+  EditInputDate,
+  EditInputDescription,
+  EditInputTitle,
+} from "./domModule";
 import { deleteTodo } from "./deleteTodo.js";
+import { editTodo } from "./editTodo.js";
 
 class CreateTodo {
   constructor(title, description, dueDate, priority, completed) {
@@ -37,11 +46,14 @@ const createNewTodo = (activeHeader) => {
   const label = document.createElement("label");
   const description = document.createElement("p");
   const dueDate = document.createElement("p");
+  const btnsDiv = document.createElement("div");
   const deleteBtn = document.createElement("button");
+  const editBtn = document.createElement("button");
 
   todo.classList.add("todo");
 
   deleteBtn.textContent = "Delete";
+  editBtn.textContent = "edit";
 
   // set attribute
   checkbox.setAttribute("type", "checkbox");
@@ -49,7 +61,8 @@ const createNewTodo = (activeHeader) => {
   checkbox.setAttribute("name", "todo");
   label.setAttribute("for", "todo");
 
-  // Include date-fns to show date
+  // Include date-fns to show date in another format
+  const normalDate = inputDate.value;
   const result = formatDistanceToNow(inputDate.value, { addSuffix: true });
   dueDate.textContent = result;
 
@@ -82,7 +95,8 @@ const createNewTodo = (activeHeader) => {
   });
 
   // Append Childs
-  todo.append(checkbox, label, description, dueDate, deleteBtn);
+  btnsDiv.append(editBtn, deleteBtn);
+  todo.append(checkbox, label, description, dueDate, btnsDiv);
   todosDiv.appendChild(todo);
 
   // Find the corresponding project container
@@ -97,6 +111,24 @@ const createNewTodo = (activeHeader) => {
   //Delete Todo Event
   deleteBtn.addEventListener("click", () => {
     deleteTodo(todo, activeHeader, label.textContent);
+  });
+
+  //Edit buttons Events
+  editBtn.addEventListener("click", () => {
+    //Edit Inputs
+    EditInputTitle.value = label.textContent;
+    EditInputDescription.value = description.textContent;
+    EditInputDate.value = normalDate;
+
+    dialogEdit.showModal();
+  });
+
+  confirmEditBtn.addEventListener("click", () => {
+    editTodo(activeHeader, label, description, dueDate, priority);
+  });
+
+  cancelEditBtn.addEventListener("click", () => {
+    dialogEdit.close();
   });
 
   // Clear inputs

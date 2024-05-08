@@ -67,6 +67,36 @@
       <button id="cancel-todo">Cancel</button>
       <button id="create-todo">Add Task</button>
     </dialog>
+    <dialog class="edit-todo">
+      <h3>Edit Task</h3>
+      <div>
+        <label for="edit-title">Title :</label>
+        <input
+          type="text"
+          id="edit-title"
+          name="edit-title"
+          placeholder="Enter Title"
+        />
+        <label for="edit-description">Description :</label>
+        <input
+          type="text"
+          id="edit-description"
+          name="edit-description"
+          placeholder="Write Description"
+        />
+        <label for="edit-date">Due Date :</label>
+        <input type="date" id="edit-date" name="edit-date" min="2024-01-01" />
+        <label for="edit-priority">Set Priority :</label>
+        <select id="edit-priority" name="edit-priority">
+          <option value="Priority 1">Priority 1</option>
+          <option value="Priority 2">Priority 2</option>
+          <option value="Priority 3">Priority 3</option>
+          <option value="Priority 4">Priority 4</option>
+        </select>
+      </div>
+      <button id="cancel-edit">Cancel</button>
+      <button id="edit-todo">Confirm</button>
+    </dialog>
     <footer>
       <a href="https://www.freepik.com/search">Icon by Grafixpoint</a>
       <a href="https://www.freepik.com/search">Icon by Elite Art</a>
