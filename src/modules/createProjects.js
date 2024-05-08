@@ -2,6 +2,7 @@ export { createProject };
 import { showTodoSection } from "./showTodos";
 import { projectLoader } from "./projects.js";
 import { todoIcon } from "../index.js";
+import { deletProject } from "./deleteProject.js";
 import {
   todosContainer,
   projectsContainer,
@@ -24,17 +25,21 @@ const createProject = () => {
   // Create project button and info
   const projectsBtn = document.createElement("button");
   const todoAddBtn = document.createElement("button");
-  const projectsInfo = document.createElement("div");
+  const projectInfo = document.createElement("div");
   const todoCounter = document.createElement("span");
-  projectsInfo.textContent = `# ${inputName.value} / todos: `;
+  const deleteBtn = document.createElement("button");
+
+  projectInfo.textContent = `# ${inputName.value} / todos: `;
   todoCounter.textContent = "0";
   projectsBtn.textContent = `# ${inputName.value}`;
   projectsBtn.style.backgroundColor = `light${inputColor.value}`;
-  projectsInfo.style.backgroundColor = `light${inputColor.value}`;
-  projectsInfo.classList.add("project-info");
-  projectsInfo.setAttribute("id", "");
-  projectsInfo.appendChild(todoCounter);
-  projectsContainer.appendChild(projectsInfo);
+  projectInfo.style.backgroundColor = `light${inputColor.value}`;
+  projectInfo.classList.add("project-info");
+  projectInfo.setAttribute("id", "");
+  deleteBtn.textContent = "Remove Project";
+
+  projectInfo.append(todoCounter, deleteBtn);
+  projectsContainer.appendChild(projectInfo);
   projectsDiv.appendChild(projectsBtn);
 
   // Create project and project container
@@ -60,6 +65,12 @@ const createProject = () => {
 
   todosProject.append(h3, todoAddBtn);
 
+  //Remove Project EventListener
+  const projectName = h3.textContent.split().splice(0, 1).join();
+  deleteBtn.addEventListener("click", () => {
+    deletProject(projectInfo, projectsBtn, todosProject, projectName);
+  });
+
   // Clear input fields and close dialog
   inputName.value = "";
   projectsCounter.textContent = projectLoader.projects.length;
@@ -77,4 +88,6 @@ const createProject = () => {
 
   // Append new project container to todos container
   todosContainer.appendChild(todosProject);
+
+  console.log(projectLoader.projects);
 };

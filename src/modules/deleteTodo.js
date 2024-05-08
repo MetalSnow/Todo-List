@@ -8,9 +8,9 @@ const deleteTodo = (container, activeHeader, label) => {
     let todosArray = project.todos;
 
     if (project.name === activeHeader) {
-      todosArray.forEach((todo) => {
+      todosArray.forEach((todo, index) => {
         if (todo.title === label) {
-          project.todos.splice(todosArray.indexOf(todo), 1);
+          project.todos.splice(index, 1);
         }
       });
     }

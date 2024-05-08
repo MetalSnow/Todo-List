@@ -80,5 +80,3 @@ createTodoBtn.addEventListener("click", () => {
 defaultProject();
 
 createBtn.addEventListener("click", createProject);
-
-console.log("are we back???")
