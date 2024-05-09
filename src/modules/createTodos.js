@@ -94,6 +94,9 @@ const createNewTodo = (activeHeader) => {
     }
   });
 
+  // Set id for edit button
+  editBtn.setAttribute("id", label.textContent);
+
   // Append Childs
   btnsDiv.append(editBtn, deleteBtn);
   todo.append(checkbox, label, description, dueDate, btnsDiv);
@@ -108,23 +111,24 @@ const createNewTodo = (activeHeader) => {
     }
   });
 
-  //Delete Todo Event
+  // Delete Todo Event
   deleteBtn.addEventListener("click", () => {
     deleteTodo(todo, activeHeader, label.textContent);
   });
 
-  //Edit buttons Events
+  // Edit buttons Events
   editBtn.addEventListener("click", () => {
-    //Edit Inputs
+    // Edit Inputs
     EditInputTitle.value = label.textContent;
     EditInputDescription.value = description.textContent;
     EditInputDate.value = normalDate;
 
     dialogEdit.showModal();
-  });
 
-  confirmEditBtn.addEventListener("click", () => {
-    editTodo(activeHeader, label, description, dueDate, priority);
+    confirmEditBtn.addEventListener("click", () => {
+      editTodo(activeHeader, label, description, dueDate);
+      dialogEdit.close();
+    });
   });
 
   cancelEditBtn.addEventListener("click", () => {

@@ -14,6 +14,8 @@ import {
   createBtn,
   addBtn,
   createTodoBtn,
+  cancelTodoBtn,
+  dialogTodo,
 } from "./modules/domModule.js";
 export { todoIcon };
 export {
@@ -45,6 +47,7 @@ showProjectsBtn.addEventListener("click", () => {
   todosContainer.style.display = "none";
 });
 
+//Todo section
 createTodoBtn.addEventListener("click", () => {
   const projectContainers = document.querySelectorAll(".project-container");
   const projectInfos = document.querySelectorAll(".project-info span");
@@ -61,6 +64,10 @@ createTodoBtn.addEventListener("click", () => {
   for (let i = 0; i < projectInfos.length; i++) {
     projectInfos[i].textContent = projectLoader.projects[i].todos.length;
   }
+});
+
+cancelTodoBtn.addEventListener("click", () => {
+  dialogTodo.close();
 });
 
 defaultProject();

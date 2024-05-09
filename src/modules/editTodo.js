@@ -8,7 +8,7 @@ import {
 } from "./domModule";
 import { projectLoader } from "./projects";
 
-const editTodo = (activeHeader, label, description, Date, Priority) => {
+const editTodo = (activeHeader, label, description, Date) => {
   projectLoader.projects.forEach((project) => {
     let todosArray = project.todos;
 
@@ -28,6 +28,5 @@ const editTodo = (activeHeader, label, description, Date, Priority) => {
 
   label.textContent = EditInputTitle.value;
   description.textContent = EditInputDescription.value;
-  Date.textContent = EditInputDate.value;
-  Priority.textContent = EditInputPriority.value;
+  Date.textContent = result;
 };
