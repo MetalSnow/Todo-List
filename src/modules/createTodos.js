@@ -1,21 +1,18 @@
 export { createNewTodo };
 import { formatDistanceToNow } from "date-fns";
-import { markTodoAsCompleted, UnmarkTodoAsCompleted } from "../index.js";
-import { projectLoader } from "./projects.js";
 import {
-  cancelEditBtn,
-  confirmEditBtn,
-  dialogEdit,
-  dialogTodo,
-  EditInputDate,
-  EditInputDescription,
-  EditInputTitle,
-} from "./domModule";
+  markTodoAsCompleted,
+  UnmarkTodoAsCompleted,
+  todoIdCounter,
+} from "../index.js";
+import { projectLoader } from "./projects.js";
+import { dialogTodo } from "./domModule";
 import { deleteTodo } from "./deleteTodo.js";
-import { editTodo } from "./editTodo.js";
+import { generateEditTodoDialog } from "./editTodoDialog.js";
 
 class CreateTodo {
-  constructor(title, description, dueDate, priority, completed) {
+  constructor(id, title, description, dueDate, priority, completed) {
+    this.id = id;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -66,9 +63,13 @@ const createNewTodo = (activeHeader) => {
   const result = formatDistanceToNow(inputDate.value, { addSuffix: true });
   dueDate.textContent = result;
 
+  // Increment the counter to generate a unique ID for the todo
+  todoIdCounter++;
+
   projectLoader.projects.forEach((project) => {
     if (project.name === activeHeader) {
       const newTodo = new CreateTodo(
+        todoIdCounter,
         inputTitle.value,
         inputDescription.value,
         inputDate.value,
@@ -80,6 +81,23 @@ const createNewTodo = (activeHeader) => {
       description.textContent = newTodo.description;
       console.log(activeHeader);
       console.log(projectLoader.projects);
+
+      console.log("New Todo Object:", newTodo);
+
+      // Add event listener for edit button
+      editBtn.addEventListener("click", () => {
+        generateEditTodoDialog(
+          newTodo,
+          activeHeader,
+          newTodo,
+          label,
+          description,
+          dueDate,
+          normalDate
+        );
+
+        console.log("Edit Button Clicked for Todo:", newTodo);
+      });
 
       // Mark todo as completed
       checkbox.addEventListener("change", () => {
@@ -114,25 +132,6 @@ const createNewTodo = (activeHeader) => {
   // Delete Todo Event
   deleteBtn.addEventListener("click", () => {
     deleteTodo(todo, activeHeader, label.textContent);
-  });
-
-  // Edit buttons Events
-  editBtn.addEventListener("click", () => {
-    // Edit Inputs
-    EditInputTitle.value = label.textContent;
-    EditInputDescription.value = description.textContent;
-    EditInputDate.value = normalDate;
-
-    dialogEdit.showModal();
-
-    confirmEditBtn.addEventListener("click", () => {
-      editTodo(activeHeader, label, description, dueDate);
-      dialogEdit.close();
-    });
-  });
-
-  cancelEditBtn.addEventListener("click", () => {
-    dialogEdit.close();
   });
 
   // Clear inputs

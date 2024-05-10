@@ -18,6 +18,7 @@ import {
   dialogTodo,
 } from "./modules/domModule.js";
 export { todoIcon };
+export { todoIdCounter };
 export {
   markTodoAsCompleted,
   UnmarkTodoAsCompleted,
@@ -48,6 +49,10 @@ showProjectsBtn.addEventListener("click", () => {
 });
 
 //Todo section
+
+// Define a counter variable to generate unique IDs
+let todoIdCounter = 0;
+
 createTodoBtn.addEventListener("click", () => {
   const projectContainers = document.querySelectorAll(".project-container");
   const projectInfos = document.querySelectorAll(".project-info span");

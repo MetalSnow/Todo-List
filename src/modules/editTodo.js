@@ -1,20 +1,29 @@
 export { editTodo };
 import { formatDistanceToNow } from "date-fns";
-import {
-  EditInputDate,
-  EditInputDescription,
-  EditInputPriority,
-  EditInputTitle,
-} from "./domModule";
+import // EditInputDate,
+// EditInputDescription,
+// EditInputPriority,
+// EditInputTitle,
+"./domModule";
 import { projectLoader } from "./projects";
 
-const editTodo = (activeHeader, label, description, Date) => {
+const editTodo = (
+  activeHeader,
+  todo,
+  label,
+  description,
+  Date,
+  EditInputTitle,
+  EditInputDescription,
+  EditInputDate,
+  EditInputPriority
+) => {
   projectLoader.projects.forEach((project) => {
     let todosArray = project.todos;
 
     if (project.name === activeHeader) {
-      todosArray.forEach((todo) => {
-        if (todo.title === label.textContent) {
+      todosArray.forEach((todoItem) => {
+        if (todoItem === todo) {
           todo.title = EditInputTitle.value;
           todo.description = EditInputDescription.value;
           todo.dueDate = EditInputDate.value;
