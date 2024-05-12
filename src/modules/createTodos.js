@@ -79,10 +79,6 @@ const createNewTodo = (activeHeader) => {
       project.addNewTodo(newTodo);
       label.textContent = newTodo.title;
       description.textContent = newTodo.description;
-      console.log(activeHeader);
-      console.log(projectLoader.projects);
-
-      console.log("New Todo Object:", newTodo);
 
       // Add event listener for edit button
       editBtn.addEventListener("click", () => {
@@ -95,17 +91,13 @@ const createNewTodo = (activeHeader) => {
           dueDate,
           normalDate
         );
-
-        console.log("Edit Button Clicked for Todo:", newTodo);
       });
 
       // Mark todo as completed
       checkbox.addEventListener("change", () => {
         if (checkbox.checked) {
-          console.log("Checkbox is checked..");
           markTodoAsCompleted(label, newTodo);
         } else {
-          console.log("Checkbox is not checked..");
           UnmarkTodoAsCompleted(label, newTodo);
         }
       });

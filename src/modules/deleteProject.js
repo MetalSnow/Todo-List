@@ -12,5 +12,4 @@ const deletProject = (projectInfo, projectsBtn, todosProject, projectName) => {
       projectArray.splice(index, 1);
     }
   });
-  console.log(projectLoader.projects);
 };

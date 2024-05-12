@@ -106,7 +106,7 @@ const generateEditTodoDialog = (
       selectPriority
     );
     dialogEdit.close();
-    // dialogEdit.remove(); // Remove the dialog from the DOM
+    dialogEdit.remove();
   });
 
   div.appendChild(cancelButton);

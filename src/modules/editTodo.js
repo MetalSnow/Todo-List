@@ -1,10 +1,5 @@
 export { editTodo };
 import { formatDistanceToNow } from "date-fns";
-import // EditInputDate,
-// EditInputDescription,
-// EditInputPriority,
-// EditInputTitle,
-"./domModule";
 import { projectLoader } from "./projects";
 
 const editTodo = (

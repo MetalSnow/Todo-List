@@ -88,6 +88,4 @@ const createProject = () => {
 
   // Append new project container to todos container
   todosContainer.appendChild(todosProject);
-
-  console.log(projectLoader.projects);
 };
