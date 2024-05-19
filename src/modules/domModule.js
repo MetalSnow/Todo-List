@@ -12,7 +12,7 @@ import { projectLoader } from "./projects.js";
 import { formatDistanceToNow } from "date-fns";
 import { markTodoAsCompleted, UnmarkTodoAsCompleted } from "../index.js";
 import { deleteTodo } from "./deleteTodo.js";
-import { generateEditTodoDialog } from "./editTodoDialog.js";
+import { generateEditTodoDialog } from "./generateEditTodoDialog.js";
 import { createNewTodo } from "./createTodos.js";
 import { createProject } from "./createProjects.js";
 
@@ -27,7 +27,19 @@ const addBtn = document.createElement("button");
 const cancelBtn = document.querySelector("#cancel");
 const dialogProject = document.querySelector(".CreateProject");
 
-createBtn.addEventListener("click", createProject);
+// Project inputs
+const inputName = document.querySelector("#name");
+const inputColor = document.querySelector("#color");
+
+// todo inputs
+const inputTitle = document.querySelector("#title");
+const inputDescription = document.querySelector("#description");
+const inputDate = document.querySelector("#date");
+const inputPriority = document.querySelector("#priority");
+
+createBtn.addEventListener("click", () => {
+  createProject(inputName, inputColor);
+});
 
 // implement project add icon
 const myProjectIcon = new Image();
@@ -179,7 +191,13 @@ createTodoBtn.addEventListener("click", () => {
   projectContainers.forEach((container) => {
     if (container.style.display === "block") {
       const header = container.firstChild.textContent;
-      createNewTodo(header);
+      createNewTodo(
+        header,
+        inputTitle,
+        inputDescription,
+        inputDate,
+        inputPriority
+      );
     }
   });
 });

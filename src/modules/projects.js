@@ -7,9 +7,6 @@ function project(projects) {
       name: name,
       color: color,
       todos: [],
-      addNewTodo(todo) {
-        this.todos.push(todo);
-      },
     };
     projects.push(newProject);
   };
