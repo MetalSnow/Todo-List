@@ -65,8 +65,6 @@ showProjectsBtn.addEventListener("click", () => {
   todosContainer.style.display = "none";
 });
 
-const generateInitialContent = () => {};
-
 const renderProject = (inputName, inputColor) => {
   // Create project button and info
   const projectsBtn = document.createElement("button");
@@ -75,11 +73,11 @@ const renderProject = (inputName, inputColor) => {
   const todoCounter = document.createElement("span");
   const deleteBtn = document.createElement("button");
 
-  projectInfo.textContent = `# ${inputName.value} / todos: `;
+  projectInfo.textContent = `# ${inputName.value || inputName} / todos: `;
   todoCounter.textContent = "0";
-  projectsBtn.textContent = `# ${inputName.value}`;
-  projectsBtn.style.backgroundColor = `light${inputColor.value}`;
-  projectInfo.style.backgroundColor = `light${inputColor.value}`;
+  projectsBtn.textContent = `# ${inputName.value || inputName}`;
+  projectsBtn.style.backgroundColor = `light${inputColor.value || inputColor}`;
+  projectInfo.style.backgroundColor = `light${inputColor.value || inputColor}`;
   projectInfo.classList.add("project-info");
   projectInfo.setAttribute("id", "");
   deleteBtn.textContent = "Remove Project";
@@ -90,7 +88,7 @@ const renderProject = (inputName, inputColor) => {
 
   const todosProject = document.createElement("div");
   const h3 = document.createElement("h3");
-  h3.textContent = inputName.value;
+  h3.textContent = inputName.value || inputName;
   todosProject.classList.add("project-container");
   todosProject.style.display = "block";
 
@@ -122,9 +120,12 @@ const renderProject = (inputName, inputColor) => {
   projectsBtn.addEventListener("click", showTodoSection);
 
   console.log(projectLoader.projects);
+
   // Clear input fields and close dialog
-  inputName.value = "";
-  dialogProject.close();
+  if (typeof inputName !== "string") {
+    inputName.value = "";
+    dialogProject.close();
+  }
 
   // Hide todos of the previously active project container
   const existingProjectContainers =
@@ -234,9 +235,14 @@ const renderTodo = (
   checkbox.setAttribute("name", "todo");
   label.setAttribute("for", "todo");
 
-  // Include date-fns to show date in another format
-  const normalDate = inputDate.value;
-  const result = formatDistanceToNow(inputDate.value, { addSuffix: true });
+  // console.log(inputDate);
+
+  // Include date-fns to show date in another format\
+  let normalDate = inputDate.value || inputDate;
+  let result = formatDistanceToNow(inputDate.value || inputDate, {
+    addSuffix: true,
+  });
+
   dueDate.textContent = result;
 
   label.textContent = newTodo.title;
@@ -291,16 +297,17 @@ const renderTodo = (
     }
   });
 
-  // Clear inputs
-  inputTitle.value = "";
-  inputDescription.value = "";
-  inputDate.value = "";
-
   // Update project info
   const projectInfos = document.querySelectorAll(".project-info span");
   for (let i = 0; i < projectInfos.length; i++) {
     projectInfos[i].textContent = projectLoader.projects[i].todos.length;
   }
 
-  dialogTodo.close();
+  // Clear inputs and close dialog
+  if (typeof inputTitle !== "string") {
+    inputTitle.value = "";
+    inputDescription.value = "";
+    inputDate.value = "";
+    dialogTodo.close();
+  }
 };
