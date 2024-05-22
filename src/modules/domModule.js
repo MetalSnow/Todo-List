@@ -15,6 +15,7 @@ import { deleteTodo } from "./deleteTodo.js";
 import { generateEditTodoDialog } from "./generateEditTodoDialog.js";
 import { createNewTodo } from "./createTodos.js";
 import { createProject } from "./createProjects.js";
+import { updateProjectsInLocalStorage } from "./localStorage.js";
 
 //project
 const projectsContainer = document.querySelector(".project-list");
@@ -111,15 +112,12 @@ const renderProject = (inputName, inputColor) => {
   deleteBtn.addEventListener("click", () => {
     deletProject(projectInfo, projectsBtn, todosProject, projectName);
     projectsCounter.textContent = projectLoader.projects.length;
-    console.log(projectLoader.projects);
   });
 
   // Update Project Counter
   projectsCounter.textContent = projectLoader.projects.length;
 
   projectsBtn.addEventListener("click", showTodoSection);
-
-  console.log(projectLoader.projects);
 
   // Clear input fields and close dialog
   if (typeof inputName !== "string") {
@@ -235,8 +233,6 @@ const renderTodo = (
   checkbox.setAttribute("name", "todo");
   label.setAttribute("for", "todo");
 
-  // console.log(inputDate);
-
   // Include date-fns to show date in another format\
   let normalDate = inputDate.value || inputDate;
   let result = formatDistanceToNow(inputDate.value || inputDate, {
@@ -263,11 +259,23 @@ const renderTodo = (
 
   // Mark todo as completed
   checkbox.addEventListener("change", () => {
-    if (checkbox.checked) {
-      markTodoAsCompleted(label, newTodo);
-    } else {
-      UnmarkTodoAsCompleted(label, newTodo);
-    }
+    projectLoader.projects.forEach((project, index) => {
+      if (checkbox.checked) {
+        markTodoAsCompleted(label, newTodo);
+
+        // Update Completed Status in Local Storage
+        if (project.name === activeHeader) {
+          updateProjectsInLocalStorage(index);
+        }
+      } else {
+        UnmarkTodoAsCompleted(label, newTodo);
+
+        // Update Completed Status in Local Storage
+        if (project.name === activeHeader) {
+          updateProjectsInLocalStorage(index);
+        }
+      }
+    });
   });
 
   // Set id for edit button

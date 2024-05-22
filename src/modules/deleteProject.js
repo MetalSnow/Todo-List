@@ -1,4 +1,5 @@
 export { deletProject };
+import { deleteProjectFromLocalStorage } from "./localStorage";
 import { projectLoader } from "./projects";
 
 const deletProject = (projectInfo, projectsBtn, todosProject, projectName) => {
@@ -10,6 +11,9 @@ const deletProject = (projectInfo, projectsBtn, todosProject, projectName) => {
   projectArray.forEach((project, index) => {
     if (project.name === projectName) {
       projectArray.splice(index, 1);
+
+      //Update Project In local Storage
+      deleteProjectFromLocalStorage();
     }
   });
 };

@@ -1,6 +1,7 @@
 export { editTodo };
 import { formatDistanceToNow } from "date-fns";
 import { projectLoader } from "./projects";
+import { updateProjectsInLocalStorage } from "./localStorage";
 
 const editTodo = (
   activeHeader,
@@ -13,7 +14,7 @@ const editTodo = (
   EditInputDate,
   EditInputPriority
 ) => {
-  projectLoader.projects.forEach((project) => {
+  projectLoader.projects.forEach((project, index) => {
     let todosArray = project.todos;
 
     if (project.name === activeHeader) {
@@ -25,6 +26,7 @@ const editTodo = (
           todo.priority = EditInputPriority.value;
         }
       });
+      updateProjectsInLocalStorage(index);
     }
   });
 

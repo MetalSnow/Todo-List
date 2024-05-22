@@ -3,7 +3,7 @@ import { todoIdCounter } from "../index.js";
 import { projectLoader } from "./projects.js";
 import { renderTodo } from "./domModule";
 import { CreateTodo } from "./todos.js";
-import { saveTodoIntoLocalStorage } from "./localStorage.js";
+import { updateProjectsInLocalStorage } from "./localStorage.js";
 
 const createNewTodo = (
   activeHeader,
@@ -27,7 +27,7 @@ const createNewTodo = (
 
   const allProjects = projectLoader.projects;
 
-  projectLoader.projects.forEach((project) => {
+  allProjects.forEach((project, index) => {
     if (project.name === activeHeader) {
       const newTodo = new CreateTodo(
         todoIdCounter,
@@ -45,7 +45,7 @@ const createNewTodo = (
         newTodo,
         activeHeader
       );
-      saveTodoIntoLocalStorage(allProjects.indexOf(project));
+      updateProjectsInLocalStorage(index);
     }
   });
 };

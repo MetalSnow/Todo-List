@@ -15,7 +15,7 @@ const generateEditTodoDialog = (
   dialogEdit.classList.add("edit-todo");
 
   // Add custom data attribute to identify the associated todo
-  dialogEdit.dataset.todoId = todo.id; // Assuming todo has an id property
+  dialogEdit.dataset.todoId = todo.id;
 
   // Create dialog content
   const h3 = document.createElement("h3");

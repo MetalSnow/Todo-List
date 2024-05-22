@@ -1,10 +1,12 @@
 import { renderProject, renderTodo } from "./domModule";
+import { UnmarkTodoAsCompleted, markTodoAsCompleted } from "./markTodo";
 import { projectLoader } from "./projects";
 export {
   saveProjectIntoLocalStorage,
-  saveTodoIntoLocalStorage,
+  updateProjectsInLocalStorage,
   getDataFromLocalStorage,
   saveDefaultProjectInLocalStorage,
+  deleteProjectFromLocalStorage,
 };
 
 const saveDefaultProjectInLocalStorage = () => {
@@ -20,17 +22,23 @@ const saveProjectIntoLocalStorage = () => {
   const projectsLength = projectLoader.projects.length;
   const lastProject = projectLoader.projects[projectsLength - 1];
 
-  //   console.log(JSON.stringify(lastProject));
   localStorage.setItem(`Project ${projectNum++}`, JSON.stringify(lastProject));
-  console.log(projectNum);
 };
 
-const saveTodoIntoLocalStorage = (projectIndex) => {
+const updateProjectsInLocalStorage = (projectIndex) => {
   const currentProject = projectLoader.projects[projectIndex];
   localStorage.setItem(
     `Project ${projectIndex}`,
     JSON.stringify(currentProject)
   );
+};
+
+const deleteProjectFromLocalStorage = () => {
+  localStorage.clear();
+  const projects = projectLoader.projects;
+  for (let i = 0; i < projects.length; i++) {
+    updateProjectsInLocalStorage(i);
+  }
 };
 
 const getDataFromLocalStorage = () => {
@@ -41,7 +49,6 @@ const getDataFromLocalStorage = () => {
     let getProject = localStorage.getItem(`Project ${i}`);
     projectLoader.projects.push(JSON.parse(getProject));
   }
-  console.log(projectLoader.projects);
 
   projectLoader.projects.forEach((project) => {
     // Render Projects
@@ -49,9 +56,9 @@ const getDataFromLocalStorage = () => {
       renderProject(project.name, project.color);
     }
 
-    // Render Todos
-    if (project.todos.length !== 0) {
-      for (let i = 0; i < project.todos.length; i++) {
+    for (let i = 0; i < project.todos.length; i++) {
+      // Render Todos
+      if (project.todos.length !== 0) {
         renderTodo(
           project.todos[i].title,
           project.todos[i].description,
@@ -59,6 +66,20 @@ const getDataFromLocalStorage = () => {
           project.todos[i],
           project.name
         );
+
+        // Mark Todo as completed
+        const labels = document.querySelectorAll("label");
+        labels.forEach((label) => {
+          if (label.textContent == project.todos[i].title) {
+            const checkbox = label.parentElement.firstChild;
+            if (project.todos[i].completed == true) {
+              markTodoAsCompleted(label, project.todos[i]);
+              checkbox.checked = true;
+            } else {
+              UnmarkTodoAsCompleted(label, project.todos[i]);
+            }
+          }
+        });
       }
     }
   });
