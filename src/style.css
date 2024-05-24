@@ -1,4 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap");
+
+:root {
+  --darkBrown: #402c2c;
+  --darkLateGray: #2f4f4f;
+}
 
 * {
   font-family: "Roboto", sans-serif;
@@ -17,28 +23,35 @@ body {
 header {
   text-align: center;
   background-color: bisque;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.check-icon {
+  width: 45px;
+}
+
+h1 {
+  font-family: "Poetsen One", "Roboto", sans-serif;
+  font-size: 36px;
+  letter-spacing: 2px;
+  color: #303f3f;
+  text-shadow: 2px 2px 2px #362a2abd;
+  margin: 15px 2px;
 }
 
 .plus {
   width: 17px;
 }
 
-#addBtn {
+.todo-add-btn {
   display: flex;
   align-items: center;
   font-weight: 500;
   font-size: 14px;
   gap: 5px;
-  padding: 3px 5px;
-}
-
-#todoAddBtn {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  font-size: 14px;
-  gap: 5px;
-  padding: 3px 5px;
+  padding: 4px 6px;
 }
 
 .container {
@@ -46,6 +59,7 @@ header {
   height: 100%;
 }
 
+/* project section */
 #myProjects {
   color: white;
   font-style: italic;
@@ -54,42 +68,147 @@ header {
   font-weight: 700;
   font-size: 18px;
   padding: 12px;
-  background-color: brown;
+  background-color: var(--darkLateGray);
   cursor: pointer;
+  border-style: groove;
+  border-radius: 15px 0 15px 0;
+  transition: 0.3s;
 }
 
 #myProjects:hover {
-  background-color: rgba(165, 42, 42, 0.742);
+  background-color: rgba(59, 95, 95, 0.99);
+  border-radius: 0 15px 0 15px;
+}
+
+#addBtn {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 16px;
+  gap: 5px;
+  padding: 9px 7px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#addBtn:hover {
+  background-color: #fcd9ae;
 }
 
 .projects {
-  background-color: #e4e4e4;
   display: flex;
   flex-direction: column;
-  width: 20%;
+  width: 23%;
+  height: 628px;
+  overflow: auto;
   gap: 5px;
+  background-color: #d3d3d373;
+}
+
+.projects-btns {
+  font-family: fantasy, "Roboto", sans-serif;
+  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px;
+  background-color: white;
+  color: #000028;
+  border: none;
+  border-bottom: 2px solid var(--darkLateGray);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.projects-btns:hover {
+  padding-left: 20px;
+  border-bottom: 2px solid bisque;
+}
+
+.projects-btns:active {
+  box-shadow: none;
+}
+
+.project-dialog {
+  animation: fade-out 0.5s ease-out;
+}
+
+.project-dialog::backdrop {
+  background-color: black;
+  opacity: 0.5;
+}
+
+.project-dialog[open] {
+  animation: fadein 0.5s ease-in forwards;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    display: block;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    display: block;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0);
+    display: none;
+  }
 }
 
 .project-list {
-  background-color: #ababab8f;
   width: 100%;
+  padding: 10px 20px;
+}
+
+.project-list h2 {
+  font-family: "Poetsen One", sans-serif;
+  font-size: 27px;
+  color: var(--darkBrown);
 }
 
 /* todos section */
 .todo-list {
   display: none;
   width: 100%;
+  padding: 10px 20px;
+}
+
+.todo-list h3 {
+  font-family: monospace;
+  font-size: 28px;
+  color: var(--darkBrown);
 }
 
 .todo {
   transition: all 0.6s ease 0s;
 }
 
+/* footer section */
 footer {
   display: flex;
   justify-content: space-between;
   background-color: black;
   padding: 5px 8px;
+}
+
+footer p {
+  color: white;
 }
 
 a {

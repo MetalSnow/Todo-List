@@ -5,7 +5,7 @@ export {
   renderDefaultProject,
   renderTodo,
 };
-import { todoIcon, projectIcon } from "../index.js";
+import { todoIcon, projectIcon, todoCheckIcon } from "../index.js";
 import { deletProject } from "./deleteProject.js";
 import { showTodoSection } from "./showTodos";
 import { projectLoader } from "./projects.js";
@@ -17,7 +17,16 @@ import { createNewTodo } from "./createTodos.js";
 import { createProject } from "./createProjects.js";
 import { updateProjectsInLocalStorage } from "./localStorage.js";
 
-//project
+// Add icon to header
+const todoListHeader = document.querySelector("h1");
+const myCheckIcon = new Image();
+
+myCheckIcon.src = todoCheckIcon;
+myCheckIcon.classList.add("check-icon");
+
+todoListHeader.parentNode.insertBefore(myCheckIcon, todoListHeader);
+
+// project
 const projectsContainer = document.querySelector(".project-list");
 const todosContainer = document.querySelector(".todo-list");
 const projectsDiv = document.querySelector(".projects");
@@ -26,7 +35,7 @@ const showProjectsBtn = document.querySelector("#myProjects");
 const projectsCounter = document.querySelector(".proNum");
 const addBtn = document.createElement("button");
 const cancelBtn = document.querySelector("#cancel");
-const dialogProject = document.querySelector(".CreateProject");
+const dialogProject = document.querySelector(".project-dialog");
 
 // Project inputs
 const inputName = document.querySelector("#name");
@@ -77,6 +86,7 @@ const renderProject = (inputName, inputColor) => {
   projectInfo.textContent = `# ${inputName.value || inputName} / todos: `;
   todoCounter.textContent = "0";
   projectsBtn.textContent = `# ${inputName.value || inputName}`;
+  projectsBtn.classList.add("projects-btns");
   projectsBtn.style.backgroundColor = `light${inputColor.value || inputColor}`;
   projectInfo.style.backgroundColor = `light${inputColor.value || inputColor}`;
   projectInfo.classList.add("project-info");
@@ -144,10 +154,12 @@ const renderDefaultProject = () => {
 
   homeInfo.style.backgroundColor = "white";
   homeInfo.classList.add("project-info");
+  homeInfo.style.backgroundColor = "#d3d3d3d1";
   homeInfo.textContent = `# Home / todos: `;
   todoCounter.textContent = "0";
 
   homeBtn.textContent = "# Home";
+  homeBtn.classList.add("projects-btns");
   // Create project and project container for Home
   const todoAddBtn = document.createElement("button");
   const todosProject = document.createElement("div");
