@@ -21,8 +21,8 @@
     </div>
     <dialog class="project-dialog">
       <h2>New Project</h2>
-      <div>
-        <label for="name">Project Name</label>
+      <div class="dialog-info">
+        <label for="name">Project Name :</label>
         <input
           type="text"
           id="name"
@@ -39,33 +39,50 @@
           <option value="pink">Pink</option>
         </select>
       </div>
-      <button id="cancel">Cancel</button>
-      <button id="create-pro">Create</button>
-    </dialog>
-    <dialog class="CreateTodo">
-      <h3>New Task</h3>
-      <div>
-        <label for="title">Title :</label>
-        <input type="text" id="title" name="title" placeholder="Enter Title" />
-        <label for="description">Description :</label>
-        <input
-          type="text"
-          id="description"
-          name="description"
-          placeholder="Write Description"
-        />
-        <label for="date">Due Date :</label>
-        <input type="date" id="date" name="date" min="2024-01-01" />
-        <label for="priority">Set Priority :</label>
-        <select id="priority" name="priority">
-          <option value="Priority 1">Priority 1</option>
-          <option value="Priority 2">Priority 2</option>
-          <option value="Priority 3">Priority 3</option>
-          <option value="Priority 4">Priority 4</option>
-        </select>
+      <div class="dialog-btns">
+        <button id="create-pro">Create</button>
+        <button id="cancel">Cancel</button>
       </div>
-      <button id="cancel-todo">Cancel</button>
-      <button id="create-todo">Add Task</button>
+    </dialog>
+    <dialog class="todo-dialog">
+      <h3>New Task</h3>
+      <div class="todo-inputs">
+        <div>
+          <label for="title">Title :</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter Title"
+          />
+        </div>
+        <div>
+          <label for="description">Description :</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            placeholder="Write Description"
+          />
+        </div>
+        <div>
+          <label for="date">Due Date :</label>
+          <input type="date" id="date" name="date" min="2024-01-01" />
+        </div>
+        <div>
+          <label for="priority">Set Priority :</label>
+          <select id="priority" name="priority">
+            <option value="Priority 1">🚩Priority 1</option>
+            <option value="Priority 2">🏴Priority 2</option>
+            <option value="Priority 3">🏳️Priority 3</option>
+            <option value="Priority 4">🏳️Priority 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="todo-dialog-btns">
+        <button id="create-todo">Add Task</button>
+        <button id="cancel-todo">Cancel</button>
+      </div>
     </dialog>
     <footer>
       <a href="https://github.com/MetalSnow" target="_blank"

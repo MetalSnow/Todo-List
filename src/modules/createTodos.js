@@ -14,9 +14,9 @@ const createNewTodo = (
 ) => {
   // Check if inputs are filled
   if (
-    inputTitle.value === "" ||
-    inputDescription.value === "" ||
-    inputDate.value === ""
+    inputTitle.value.trim() === "" ||
+    inputDescription.value.trim() === "" ||
+    inputDate.value.trim() === ""
   ) {
     alert("Please Fill The Required Fields");
     return;
@@ -31,7 +31,7 @@ const createNewTodo = (
     if (project.name === activeHeader) {
       const newTodo = new CreateTodo(
         todoIdCounter,
-        inputTitle.value,
+        inputTitle.value.trim(),
         inputDescription.value,
         inputDate.value,
         inputPriority.value,

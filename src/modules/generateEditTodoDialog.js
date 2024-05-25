@@ -23,6 +23,7 @@ const generateEditTodoDialog = (
   dialogEdit.appendChild(h3);
 
   const div = document.createElement("div");
+  div.classList.add("edit-inputs");
 
   const labelTitle = document.createElement("label");
   labelTitle.setAttribute("for", "edit-title");
@@ -68,7 +69,12 @@ const generateEditTodoDialog = (
   selectPriority.setAttribute("id", "edit-priority");
   selectPriority.setAttribute("name", "edit-priority");
 
-  const priorities = ["Priority 1", "Priority 2", "Priority 3", "Priority 4"];
+  const priorities = [
+    "🚩Priority 1",
+    "🏴Priority 2",
+    "🏳️Priority 3",
+    "🏳️Priority 4",
+  ];
   priorities.forEach((priority) => {
     const option = document.createElement("option");
     option.value = priority;
@@ -109,8 +115,8 @@ const generateEditTodoDialog = (
     dialogEdit.remove();
   });
 
-  div.appendChild(cancelButton);
   div.appendChild(confirmButton);
+  div.appendChild(cancelButton);
   dialogEdit.appendChild(div);
 
   // Append dialog to the document body

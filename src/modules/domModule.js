@@ -71,7 +71,7 @@ cancelBtn.addEventListener("click", () => {
 
 //show projects section
 showProjectsBtn.addEventListener("click", () => {
-  projectsContainer.style.display = "block";
+  projectsContainer.style.display = "flex";
   todosContainer.style.display = "none";
 });
 
@@ -80,10 +80,12 @@ const renderProject = (inputName, inputColor) => {
   const projectsBtn = document.createElement("button");
   const todoAddBtn = document.createElement("button");
   const projectInfo = document.createElement("div");
+  const infoDiv = document.createElement("div");
+  const infoPara = document.createElement("p");
   const todoCounter = document.createElement("span");
   const deleteBtn = document.createElement("button");
 
-  projectInfo.textContent = `# ${inputName.value || inputName} / todos: `;
+  infoPara.textContent = `# ${inputName.value || inputName} / todos: `;
   todoCounter.textContent = "0";
   projectsBtn.textContent = `# ${inputName.value || inputName}`;
   projectsBtn.classList.add("projects-btns");
@@ -93,7 +95,8 @@ const renderProject = (inputName, inputColor) => {
   projectInfo.setAttribute("id", "");
   deleteBtn.textContent = "Remove Project";
 
-  projectInfo.append(todoCounter, deleteBtn);
+  infoDiv.append(infoPara, todoCounter);
+  projectInfo.append(infoDiv, deleteBtn);
   projectsContainer.appendChild(projectInfo);
   projectsDiv.appendChild(projectsBtn);
 
@@ -101,6 +104,7 @@ const renderProject = (inputName, inputColor) => {
   const h3 = document.createElement("h3");
   h3.textContent = inputName.value || inputName;
   todosProject.classList.add("project-container");
+  todosProject.style.backgroundColor = `light${inputColor.value || inputColor}`;
   todosProject.style.display = "block";
 
   // Implement todo add icon
@@ -150,12 +154,12 @@ const renderProject = (inputName, inputColor) => {
 const renderDefaultProject = () => {
   const homeBtn = document.createElement("button");
   const homeInfo = document.createElement("div");
+  const homeInfoPara = document.createElement("p");
   const todoCounter = document.createElement("span");
 
-  homeInfo.style.backgroundColor = "white";
   homeInfo.classList.add("project-info");
   homeInfo.style.backgroundColor = "#d3d3d3d1";
-  homeInfo.textContent = `# Home / todos: `;
+  homeInfoPara.textContent = `# Home / todos: `;
   todoCounter.textContent = "0";
 
   homeBtn.textContent = "# Home";
@@ -186,13 +190,14 @@ const renderDefaultProject = () => {
 
   homeBtn.addEventListener("click", showTodoSection);
 
+  homeInfoPara.appendChild(todoCounter);
   projectsDiv.append(addBtn, homeBtn);
-  homeInfo.appendChild(todoCounter);
+  homeInfo.appendChild(homeInfoPara);
   projectsContainer.appendChild(homeInfo);
 };
 
 //todo
-const dialogTodo = document.querySelector(".CreateTodo");
+const dialogTodo = document.querySelector(".todo-dialog");
 const cancelTodoBtn = document.querySelector("#cancel-todo");
 const createTodoBtn = document.querySelector("#create-todo");
 
@@ -226,6 +231,7 @@ const renderTodo = (
 ) => {
   const todosDiv = document.createElement("div");
   const todo = document.createElement("div");
+  const inputDiv = document.createElement("div");
   const checkbox = document.createElement("input");
   const label = document.createElement("label");
   const description = document.createElement("p");
@@ -235,6 +241,8 @@ const renderTodo = (
   const editBtn = document.createElement("button");
 
   todo.classList.add("todo");
+  inputDiv.classList.add("todo-check");
+  btnsDiv.classList.add("todo-btns");
 
   deleteBtn.textContent = "Delete";
   editBtn.textContent = "edit";
@@ -273,14 +281,14 @@ const renderTodo = (
   checkbox.addEventListener("change", () => {
     projectLoader.projects.forEach((project, index) => {
       if (checkbox.checked) {
-        markTodoAsCompleted(label, newTodo);
+        markTodoAsCompleted(inputDiv, newTodo);
 
         // Update Completed Status in Local Storage
         if (project.name === activeHeader) {
           updateProjectsInLocalStorage(index);
         }
       } else {
-        UnmarkTodoAsCompleted(label, newTodo);
+        UnmarkTodoAsCompleted(inputDiv, newTodo);
 
         // Update Completed Status in Local Storage
         if (project.name === activeHeader) {
@@ -295,7 +303,8 @@ const renderTodo = (
 
   // Append Childs
   btnsDiv.append(editBtn, deleteBtn);
-  todo.append(checkbox, label, description, dueDate, btnsDiv);
+  inputDiv.append(checkbox, label);
+  todo.append(inputDiv, description, dueDate, btnsDiv);
   todosDiv.appendChild(todo);
 
   // Find the corresponding project container

@@ -26,6 +26,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
 }
 
 .check-icon {
@@ -43,15 +44,6 @@ h1 {
 
 .plus {
   width: 17px;
-}
-
-.todo-add-btn {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  font-size: 14px;
-  gap: 5px;
-  padding: 4px 6px;
 }
 
 .container {
@@ -76,7 +68,7 @@ h1 {
 }
 
 #myProjects:hover {
-  background-color: rgba(59, 95, 95, 0.99);
+  background-color: #000028;
   border-radius: 0 15px 0 15px;
 }
 
@@ -104,6 +96,7 @@ h1 {
   overflow: auto;
   gap: 5px;
   background-color: #d3d3d373;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
 }
 
 .projects-btns {
@@ -131,7 +124,53 @@ h1 {
 }
 
 .project-dialog {
+  border-style: dashed;
+  border: 2px dashed var(--darkLateGray);
+  border-radius: 20px;
+  width: 32%;
+  padding: 15px 40px;
   animation: fade-out 0.5s ease-out;
+}
+
+.dialog-info {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 8px;
+  font-weight: 600;
+}
+.dialog-btns {
+  display: flex;
+  justify-content: right;
+  gap: 10px;
+}
+
+.dialog-btns button {
+  padding: 6px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--darkLateGray);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dialog-btns button:hover {
+  opacity: 0.8;
+}
+
+input,
+select {
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
 }
 
 .project-dialog::backdrop {
@@ -174,19 +213,91 @@ h1 {
 .project-list {
   width: 100%;
   padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .project-list h2 {
   font-family: "Poetsen One", sans-serif;
-  font-size: 27px;
+  font-size: 31px;
   color: var(--darkBrown);
+  margin-bottom: 0;
+}
+
+.project-list > p {
+  background-color: var(--darkBrown);
+  color: white;
+  width: fit-content;
+  padding: 4px 7px;
+  font-size: 15px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+.project-info {
+  width: 50%;
+  padding: 10px 30px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.project-info span {
+  color: red;
+  font-weight: bold;
+}
+
+.project-info > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.project-info button {
+  height: 35px;
+  padding: 0 25px;
+  border: none;
+  color: white;
+  background-color: black;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.project-info button:hover {
+  background-color: rgb(51, 51, 51);
 }
 
 /* todos section */
+
+.todo-add-btn {
+  border: none;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  gap: 5px;
+  padding: 9px 13px;
+  border-radius: 20px;
+  background-color: rgb(61, 102, 102);
+  color: white;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.todo-add-btn:hover {
+  background-color: #000028;
+}
+
 .todo-list {
   display: none;
   width: 100%;
-  padding: 10px 20px;
 }
 
 .todo-list h3 {
@@ -195,8 +306,185 @@ h1 {
   color: var(--darkBrown);
 }
 
+.todo-list h3::before {
+  content: "📑";
+}
+
 .todo {
+  background-color: rgba(226, 226, 226, 0.364);
+  position: relative;
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-top: 13px;
+  font-weight: 500;
+  font-size: 16px;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
   transition: all 0.6s ease 0s;
+}
+
+.todo p {
+  width: 50%;
+}
+
+.todo p + p {
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.todo-btns {
+  width: 150px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  position: absolute;
+  top: 25%;
+  right: 15%;
+}
+
+.todo-btns button {
+  padding: 6px 15px;
+  font-size: 14px;
+  font-weight: 600;
+
+  background-color: rgb(186, 103, 1);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
+  transition: 0.1s;
+}
+
+.todo-btns :nth-child(2) {
+  background-color: black;
+}
+
+.todo-btns button:hover {
+  color: black;
+  background-color: beige;
+}
+
+.todo-check {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2px;
+}
+
+.todo-check label {
+  font-family: Poetsen One, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--darkBrown);
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+  width: 17px;
+  height: 17px;
+  accent-color: var(--darkLateGray);
+}
+
+.project-container {
+  height: 100%;
+  padding: 10px 20px;
+}
+
+.todo-dialog {
+  border-style: dashed;
+  border: 2px dashed var(--darkLateGray);
+  border-radius: 20px;
+  width: 32%;
+  padding: 15px 40px;
+  animation: fade-out 0.5s ease-out;
+}
+
+.todo-inputs div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: 5px;
+}
+
+.todo-dialog[open] {
+  animation: fadein 0.5s ease-in forwards;
+}
+
+.todo-dialog::backdrop {
+  background-color: black;
+  opacity: 0.5;
+}
+
+.todo-dialog-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todo-dialog-btns button {
+  padding: 10px;
+  border: none;
+  color: white;
+  background-color: black;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.todo-dialog-btns button:hover {
+  opacity: 0.7;
+}
+
+#create-todo {
+  background-color: rgb(48, 0, 0);
+}
+
+.edit-todo {
+  border-style: dashed;
+  border: 2px dashed var(--darkLateGray);
+  border-radius: 20px;
+  width: 32%;
+  padding: 15px 40px;
+  animation: fade-out 0.5s ease-out;
+}
+
+.edit-todo[open] {
+  animation: fadein 0.5s ease-in forwards;
+}
+
+.edit-inputs {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: 5px;
+  gap: 8px;
+}
+
+.edit-inputs button {
+  padding: 10px;
+  border: none;
+  color: white;
+  background-color: black;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: 0.1s;
+  margin-top: 10px;
+}
+
+.edit-inputs button:hover {
+  opacity: 0.7;
+}
+
+#edit-todo {
+  background-color: rgb(48, 0, 0);
 }
 
 /* footer section */
