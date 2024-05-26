@@ -73,10 +73,10 @@ const getDataFromLocalStorage = () => {
           if (label.textContent == project.todos[i].title) {
             const checkbox = label.parentElement.firstChild;
             if (project.todos[i].completed == true) {
-              markTodoAsCompleted(label, project.todos[i]);
+              markTodoAsCompleted(label.parentElement, project.todos[i]);
               checkbox.checked = true;
             } else {
-              UnmarkTodoAsCompleted(label, project.todos[i]);
+              UnmarkTodoAsCompleted(label.parentElement, project.todos[i]);
             }
           }
         });
